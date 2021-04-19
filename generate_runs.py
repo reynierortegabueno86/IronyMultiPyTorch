@@ -1,6 +1,12 @@
 #9, 12, 7 #NO 14
 #6 NO 13, 21
 
+#MULTILINGUAL MODELS
+#ITALIAN  GPU6
+#SPANISH  GPU9
+#INGLES  GPU13
+
+
 
 
 
@@ -8,19 +14,22 @@
 
 # FOR ENGLISH LANGUAGE  COLECTIONS
 models = ["roberta", 'bertweet', 'bert']
+models = ["beto", 'spanbert']
+models = ["alberto", 'umberto']
+models=["mbert", "xlm-roberta"]
+models=["mbert"]# "xlm-roberta"]
 
 # FOR ENGLISH LANGUAGE  COLECTIONS
-models = ["beto", 'spanbert']
 #collections = ["EnRiloffEtAl13", "EnBarbieriEtAl14", "EnPtacekEtAl14", "EnMohammadEtAl15", "EnSemEval18"]
 #collections = ["EnRiloffEtAl13"]
 #collections = ["EnMohammadEtAl15"]
 #collections = ["EnSemEval18"]
-#collections = ["EnBarbieriEtAl14", "EnPtacekEtAl14"]
+collections = ["EnBarbieriEtAl14", "EnPtacekEtAl14"]
 #collections = ["EsIroSvA19ES","EsIroSvA19MX", "EsIroSvA19CU","EsIroSvA19"]
-collections = ["ItIronITAtwitiro18", "ItIronITAother18"]
-models = ["alberto", 'umberto']
+#collections = ["ItIronITA18","ItIronITAtwitiro18", "ItIronITAother18"]
+#collections=["EnRiloffEtAl13", "EnMohammadEtAl15", "EnSemEval18"]
 #language=["en"]
-language=["it"]
+language=["ml"]
 optimizers=["adam", "rmsprop"]
 output=["output"]
 folds=[10]
@@ -30,9 +39,10 @@ epochs=[50]
 patiences=[15]
 
 absolutePath = "/home/rortega/PycharmProjects/IronyMultiPyTorch"
-learningStrategy=["simple", "dynamic"]
+#learningStrategy=["simple", "dynamic"]
+learningStrategy=[ "dynamic"]
 learningRate=[5e-5]
-minlearningRate=[1e-5,3e-5]
+minlearningRate=[1e-5]
 lrdecay =[1e-05]
 if __name__=="__main__":
     import sys
@@ -60,7 +70,7 @@ if __name__=="__main__":
                                                                 print(command+f" --batchsize {batch}  --epochs {ep} --folds {f} " \
                                                                       f"--input {absolutePath}/data/{col}/training.tsv --language {lang} --learning {lr} --lrdecay {dec}" \
                                                                       f" --lrstategy {strat} --maxlength {leng} --minlearning {minlr} --model {mod}" \
-                                                                      f" --optimizer {opt} --output {absolutePath}/{out}/{col} --patience {pat}")
+                                                                      f" --optimizer {opt} --output {absolutePath}/{out}/{lang}_{col} --patience {pat}")
                                                         else:
                                                             for minlr in minlearningRate[:1]:
                                                                 print(f"echo 'running the {i} script'")

@@ -1,11 +1,9 @@
 #9, 12, 7 #NO 14
 #6 NO 13, 21
 
-
-
-
 # FOR ENGLISH LANGUAGE  COLECTIONS
 models = ['alberto']
+models = ['mbert']
 # FOR ENGLISH LANGUAGE  COLECTIONS
 #models = ["beto", 'spanbert']
 #collections = ["EnRiloffEtAl13", "EnBarbieriEtAl14", "EnPtacekEtAl14", "EnMohammadEtAl15", "EnSemEval18"]
@@ -13,25 +11,32 @@ models = ['alberto']
 #collections = ["EnMohammadEtAl15"]
 #collections = ["EnSemEval18"]
 #collections = ["EnBarbieriEtAl14", "EnPtacekEtAl14"]
+
 #collections = ["EsIroSvA19ES","EsIroSvA19MX", "EsIroSvA19CU","EsIroSvA19"]
 #fix_collection="EnMohammadEtAl15"
-fix_collection="EsIroSvA19MX"
-collections = ["EsIroSvA19CU", "EsIroSvA19ES"]
+fix_collection="EsIroSvA19"
+#collections = ["EnBarbieriEtAl14", "EnPtacekEtAl14"]
+collections = ["EnSemEval18", "ItIronITA18"]
+
+#collections = ["EsIroSvA19CU", "EsIroSvA19ES"]
+#collections = ["ItIronITAtwitiro18"]
 #collections = ["EnSemEval18", "EnRiloffEtAl13"]
-#models = ["alberto"]
-language=["es"]
+#models = ["bertweet"]
+language=["en"]
 #language=["it"]
-optimizers=["adam"]
+language=["ml"]
+#optimizers=["adam"]
+optimizers=["rmsprop"]
 output=["output"]
-#folds=[10]
+
 batchsize=[32]
 maxlength=[50]
 epochs=[50]
 patiences=[15]
 
 absolutePath = "/home/rortega/PycharmProjects/IronyMultiPyTorch"
-#learningStrategy=["dynamic"]
-learningStrategy=["simple"]
+learningStrategy=["dynamic"]
+#learningStrategy=["simple"]
 learningRate=[5e-5]
 minlearningRate=[1e-5]
 lrdecay =[1e-05]

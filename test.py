@@ -95,3 +95,99 @@ if __name__ == "__main__":
     #print(parameters._get_kwargs())
     #print(parameters.input)
     sql3.close()
+
+
+
+
+
+
+history.append({'loss': [], 'acc': [], 'dev_loss': [], 'dev_acc': []})
+torch.cuda.empty_cache()
+print('----------------------------------------------------')
+#print(f'******Evaluating the FOLD {fold + 1}/{parameters.folds}')
+print('----------------------------------------------------')
+pretrainedmodel, tokenizer = getModelTokenizerConfig(parameters.model, parameters.language)
+# Defining the data data pipeline
+data_transform = TextCompose([Tokenization(tokenizer, paddingstrategy='max_length', maxlength=parameters.maxlength, truncate=True)])
+# Obtaining the data split for training and test.
+print("#" * 50)
+print("TRAINING:", sum(trainlab), "/", len(trainlab))
+print("TEST ", sum(testlab), "/", len(testlab))
+print("#" * 50)
+data = IronyDataModule(train=ironyDataTrain, test=ironyDataTest, batch_size=parameters.batchsize)# transform=data_transform)
+# Callbacks
+# checkpoint = ModelCheckpoint(monitor='vacc', dirpath='/tmp/',
+#                              filename='sample-mnist-{epoch:02d}-{val_loss:.2f}')
+# early_stop = EarlyStopping(monitor='vacc', min_delta=0.00, patience=10, verbose=False, mode='max')
+# CREATE THE MODEL (Using Pytorch-Lightning)
+model = TransformerModel(pretrainedmodel, tokenizer, lr=parameters.learning, opt=parameters.optimizer,
+                         lr_strategy=parameters.lrstategy, minlr=parameters.minlearning)
+optimizer = model.configure_optimizers()
+data.setup("fit")
+trainloader = data.train_dataloader()
+devloader = data.val_dataloader()
+test = data.test_dataloader()
+del data
+patience = 0
+batches = len(trainloader)
+for epoch in range(parameters.epochs):
+    if patience >= parameters.patience: break
+    running_loss = 0.0
+    perc = 0
+    acc = 0
+    model.train()
+    for j, data in enumerate(trainloader, 0):
+        torch.cuda.empty_cache()
+        inputs, labels = data['X'], data['y'].to(model.dev)
+        optimizer.zero_grad()
+        outputs = model(inputs)
+        loss = model.loss_criterion(outputs, labels)
+        # print(outputs.shape, labels.shape)
+        loss.backward()
+        optimizer.step()
+        with torch.no_grad():
+            if j == 0:
+                acc = ((torch.max(outputs, 1).indices == labels).sum() / len(labels)).cpu().numpy()
+                running_loss = loss.item()
+            else:
+                acc = (acc + ((torch.max(outputs, 1).indices == labels).sum() / len(
+                    labels)).cpu().numpy()) / 2.0
+                running_loss = (running_loss + loss.item()) / 2.0
+
+        if (j + 1) * 100.0 / batches - perc >= 1 or j == batches - 1:
+            perc = (1 + j) * 100.0 / batches
+            print('\r Epoch:{} step {} of {}. {}% loss: {}'.format(epoch + 1, j + 1, batches,
+                                                                   np.round(perc, decimals=1),
+                                                                   np.round(running_loss, decimals=3)),
+                  end="")
+    model.eval()
+    history[-1]['loss'].append(running_loss)
+    with torch.no_grad():
+        out = None
+        log = None
+        for k, data in enumerate(devloader, 0):
+            torch.cuda.empty_cache()
+            inputs, label = data['X'], data['y'].to(model.dev)
+            dev_out = model(inputs)
+            if k == 0:
+                out = dev_out
+                log = label
+            else:
+                out = torch.cat((out, dev_out), 0)
+                log = torch.cat((log, label), 0)
+        dev_loss = model.loss_criterion(out, log).item()
+        dev_acc = ((torch.max(out, 1).indices == log).sum() / len(log)).cpu().numpy()
+        # print(torch.max(out, 1).indices.sum(), log.sum())
+        history[-1]['acc'].append(acc)
+        history[-1]['dev_loss'].append(dev_loss)
+        history[-1]['dev_acc'].append(dev_acc)
+    if model.best_measure is None or model.best_measure < dev_acc:  # here you must set your saveweights criteroin
+        model.best_measure = dev_acc
+        model.best_model_name = 'models/bestmodel.pt'
+        model.save(model.best_model_name)
+        patience = 0
+    patience += 1
+    print(" acc: {} ||| dev_loss: {} dev_acc: {}".format(np.round(acc, decimals=3),
+                                                         np.round(dev_loss, decimals=3),
+                                                         np.round(dev_acc, decimals=3)))
+

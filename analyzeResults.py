@@ -100,6 +100,17 @@ resAnalyzerMoh = ResultsAnalizer(
 
 #resAnalyzerMoh.summary_experimental_results("/tmp/BarbieriEtAl14.xlsx")
 
+resAnalyzerMoh = ResultsAnalizer(
+    path="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/Monolingual/English/PtacekEtAl2014/",
+    dirDB="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/Monolingual/English/PtacekEtAl2014/database/",
+    name='irony')
+
+resAnalyzerMoh.summary_experimental_results("/tmp/EnPtacekEtAl2014.xlsx")
+
+
+
+
+
 resAnalyzerSem = ResultsAnalizer(
     path="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/Monolingual/Spanish/EsIroSvA19/",
     dirDB="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/Monolingual/Spanish/EsIroSvA19/database/",
@@ -147,18 +158,57 @@ resAnalyzerSem = ResultsAnalizer(
 #resAnalyzerSem.summary_experimental_results("/tmp/ItIronITAother18.xlsx")
 
 
+resAnalyzerSem = ResultsAnalizer(
+    path="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/MonoMultiMultiModel/English/ALL/",
+    dirDB="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/MonoMultiMultiModel/English/database/",
+    name='irony')
+#resAnalyzerSem.summary_experimental_results("/tmp/mlEnglishAll.xlsx")
+
+resAnalyzerSem = ResultsAnalizer(
+    path="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/MonoMultiMultiModel/Spanish/ALL/",
+    dirDB="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/MonoMultiMultiModel/Spanish/database/",
+    name='irony')
+#resAnalyzerSem.summary_experimental_results("/tmp/mlSpanishAll.xlsx")
+
+resAnalyzerSem = ResultsAnalizer(
+    path="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/MonoMultiMultiModel/Italian/ALL/",
+    dirDB="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/MonoMultiMultiModel/Italian/database/",
+    name='irony')
+#resAnalyzerSem.summary_experimental_results("/tmp/mlItalianAll.xlsx")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #############################################################################################3
 #######CROSS-DOMAINS##########################################################3
 resAnalyzerSem = ResultsAnalizer(
     path="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/CrossDomain/English/ALL/",
     dirDB="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/CrossDomain/English/database/",
     name='irony')
-#resAnalyzerSem.summary_experimental_results("/tmp/EnCrossDomains.xlsx")
+resAnalyzerSem.summary_experimental_results("/tmp/EnCrossDomains.xlsx")
 
-
+import sys
+sys.exit()
 
 resAnalyzerSem = ResultsAnalizer(
     path="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/CrossDomain/Spanish/ALL/",
     dirDB="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/CrossDomain/Spanish/database/",
     name='irony')
-resAnalyzerSem.summary_experimental_results("/tmp/EsCrossDomains.xlsx")
+#resAnalyzerSem.summary_experimental_results("/tmp/EsCrossDomains.xlsx")
+
+resAnalyzerSem = ResultsAnalizer(
+    path="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/CrossDomain/Italian/ALL/",
+    dirDB="/media/reynier/DATA/Figurative Language Research/BiAS IRONY/Experiments/CrossDomain/Italian/database/",
+    name='irony')
+
+#resAnalyzerSem.summary_experimental_results("/tmp/ItCrossDomains.xlsx")
